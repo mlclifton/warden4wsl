@@ -27,5 +27,5 @@ alias vim='nvim'
 
 # --- Prompt (oh-my-posh owns it) ---
 if command -v oh-my-posh >/dev/null 2>&1; then
-  eval "$(oh-my-posh init zsh)"
+  eval $(oh-my-posh init zsh --config "$HOME/warden/dotfiles/oh-my-posh/warden.omp.json")
 fi

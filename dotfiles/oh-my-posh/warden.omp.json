@@ -32,6 +32,15 @@
       "alignment": "left",
       "segments": [
         {
+          "type": "text",
+          "style": "diamond",
+          "leading_diamond": "\ue0b6",
+          "trailing_diamond": "\ue0b4",
+          "foreground": "#ffffff",
+          "background": "#c94f4f",
+          "template": "{{ if .Env.WARDEN_JAIL }} \uf023 {{ if .Env.WARDEN_JAIL_NAME }}{{ .Env.WARDEN_JAIL_NAME }}{{ else }}JAIL{{ end }} {{ end }}"
+        },
+        {
           "leading_diamond": "\ue0b6",
           "trailing_diamond": "\ue0b0",
           "template": " {{ if .SSHSession }}\ueba9 {{ end }}{{ .UserName }} ",
