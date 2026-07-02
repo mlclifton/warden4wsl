@@ -1,0 +1,48 @@
+# warden4w gold image — Fedora 44 base for AI coding-agent jails
+FROM fedora:44
+
+# --- Base tooling (one layer, cleaned in the same RUN so it doesn't bloat the image) ---
+RUN dnf install -y \
+      zsh \
+      git curl wget \
+      python3 python3-pip \
+      nodejs npm \
+      neovim \
+      ripgrep fd-find \
+      util-linux-user \
+      tmux \
+ && dnf clean all \
+ && rm -rf /var/cache/dnf
+
+# --- oh-my-posh binary (prompt engine; no oh-my-zsh) ---
+# Installed to /usr/local/bin so it's on PATH for every user in the jail.
+RUN curl -s https://ohmyposh.dev/install.sh | bash -s -- -d /usr/local/bin \
+      && chmod +x /usr/local/bin/oh-my-posh
+
+# --- zsh plugins, baked to a fixed system path (.zshrc sources these unconditionally) ---
+RUN mkdir -p /usr/share/zsh-plugins \
+ && git clone --depth 1 https://github.com/zsh-users/zsh-autosuggestions \
+      /usr/share/zsh-plugins/zsh-autosuggestions \
+ && git clone --depth 1 https://github.com/zsh-users/zsh-syntax-highlighting \
+      /usr/share/zsh-plugins/zsh-syntax-highlighting
+
+# --- Unprivileged jail user ---
+# Agent runs as `dev`, never root. Home is where dotfiles + LazyVim config land.
+RUN useradd -m -s /bin/zsh dev
+
+# --- Fix the blank $SHELL (bites oh-my-posh + tools that inspect $SHELL) ---
+ENV SHELL=/bin/zsh
+
+# Jail marker — read by oh-my-posh to badge the prompt. Static "this is a jail"
+# flag; the per-jail name is injected at run time (see Part 2) so the image
+# stays name-agnostic.
+ENV WARDEN_JAIL=1
+
+# --- LazyVim starter + headless plugin pre-sync, done AS dev so paths/ownership are right ---
+USER dev
+RUN git clone --depth 1 https://github.com/LazyVim/starter ~/.config/nvim \
+ && rm -rf ~/.config/nvim/.git \
+ && nvim --headless "+Lazy! sync" +qa 2>/dev/null || true
+
+WORKDIR /home/dev/project
+CMD ["/bin/zsh", "-l"]
