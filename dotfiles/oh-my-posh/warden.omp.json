@@ -5,6 +5,7 @@
     "blue": "#4B95E9",
     "green": "#59C9A5",
     "orange": "#F07623",
+    "gray": "#565F89",
     "red": "#D81E5B",
     "white": "#E0DEF4",
     "yellow": "#F3AE35"
@@ -36,8 +37,8 @@
           "style": "diamond",
           "leading_diamond": "\ue0b6",
           "trailing_diamond": "\ue0b4",
-          "foreground": "#ffffff",
-          "background": "#c94f4f",
+          "foreground": "p:white",
+          "background": "p:red",
           "template": "{{ if .Env.WARDEN_JAIL }} \uf023 {{ if .Env.WARDEN_JAIL_NAME }}{{ .Env.WARDEN_JAIL_NAME }}{{ else }}JAIL{{ end }} {{ end }}"
         },
         {
@@ -110,7 +111,9 @@
       ]
     },
     {
-      "type": "rprompt",
+      "type": "prompt",
+      "alignment": "right",
+      "filler": "<p:gray>·</>",
       "segments": [
         {
           "options": {
@@ -159,6 +162,20 @@
           "background": "transparent",
           "type": "time",
           "style": "plain"
+        }
+      ]
+    },
+    {
+      "type": "prompt",
+      "alignment": "left",
+      "newline": true,
+      "segments": [
+        {
+          "type": "text",
+          "style": "plain",
+          "foreground": "p:yellow",
+          "background": "transparent",
+          "template": "❯ "
         }
       ]
     }
