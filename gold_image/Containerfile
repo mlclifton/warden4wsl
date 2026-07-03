@@ -38,6 +38,11 @@ ENV SHELL=/bin/zsh
 # stays name-agnostic.
 ENV WARDEN_JAIL=1
 
+# Tell applications inside the container to use 256 colors
+ENV TERM=xterm-256color
+# Tell modern prompt engines (like Oh My Posh) to enable 24-bit True Color
+ENV COLORTERM=truecolor
+
 # --- LazyVim starter + headless plugin pre-sync, done AS dev so paths/ownership are right ---
 USER dev
 RUN git clone --depth 1 https://github.com/LazyVim/starter ~/.config/nvim \
