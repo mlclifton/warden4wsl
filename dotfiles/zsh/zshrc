@@ -1,5 +1,8 @@
 # warden4w dotfiles — .zshrc
 # Managed by warden-dotfiles/install.sh (symlinked). Edit in the repo, not here.
+#
+# --- PATH ---
+export PATH="$PATH:/home/dev/go/bin"
 
 # --- History ---
 HISTFILE=~/.zsh_history
@@ -21,7 +24,11 @@ ZSH_PLUGIN_DIR=/usr/share/zsh-plugins
   && source $ZSH_PLUGIN_DIR/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # --- Aliases ---
-alias ll='ls -lah --color=auto'
+alias ls=eza
+alias l="ls --icons=always -xF"
+alias la="l -a"
+alias ll="ls -lF --icons=always"
+alias lal="ll -a"
 alias gs='git status'
 alias vim='nvim'
 
